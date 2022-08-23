@@ -1,0 +1,30 @@
+<head>
+  <title>Upload Data</title>
+</head>
+<body>
+<h1>Upload files for DOP</h1>
+<form action='/upload' enctype="multipart/form-data" method='POST'>
+    <input name="file" type="file" />
+    <input type="submit" value="Upload" />
+</form>
+<hr>
+<% if @files.length > 0 %>
+  <h2>List of uploaded files</h2>
+  <table border='1' width='50%'>
+  <tr>
+    <th>Filename</th>
+    <th>Size</th>
+    <th width='50'>Process</th>
+    <th width='50'>Remove</th>
+  </tr>
+  <% (0...@files.length).each do |n| %>
+    <tr>
+      <td><%= @files[n] %></td>
+      <td><%= @sizes[n] %></td>
+      <td><button><a href='/report?file=<%= @files[n] %>'>Report</a></button></td>
+      <td><button style='background-color:red'><a href='/delete/<%= @files[n] %>'>DELETE</a></button></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+</body>

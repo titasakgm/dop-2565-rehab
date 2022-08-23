@@ -1,0 +1,24 @@
+{
+"type": "FeatureCollection",
+"name": "v_report(geom)",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "ccaa": "8601", "amphoe": "เมืองชุมพร", "changwat": "ชุมพร", "type": "1", "count": 52, "lat": 10.497347130291191, "lon": 99.180549088837125 }, "geometry": { "type": "Point", "coordinates": [ 99.180549088837125, 10.497347130291191 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8602", "amphoe": "ท่าแซะ", "changwat": "ชุมพร", "type": "1", "count": 81, "lat": 10.675220933048116, "lon": 99.164576704551024 }, "geometry": { "type": "Point", "coordinates": [ 99.164576704551024, 10.675220933048116 ] } },
+{ "type": "Feature", "properties": { "ccaa": "7701", "amphoe": "เมืองประจวบคีรีข", "changwat": "ประจวบคีรีขันธ์", "type": "1", "count": 1, "lat": 11.811676575030516, "lon": 99.791150094986733 }, "geometry": { "type": "Point", "coordinates": [ 99.791150094986733, 11.811676575030516 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8607", "amphoe": "สวี", "changwat": "ชุมพร", "type": "1", "count": 3, "lat": 10.197932948294298, "lon": 99.106951223068634 }, "geometry": { "type": "Point", "coordinates": [ 99.106951223068634, 10.197932948294298 ] } },
+{ "type": "Feature", "properties": { "ccaa": "4608", "amphoe": "ห้วยเม็ก", "changwat": "กาฬสินธุ์", "type": "1", "count": 2, "lat": 16.595720553387, "lon": 103.21635160094571 }, "geometry": { "type": "Point", "coordinates": [ 103.216351600945714, 16.595720553387 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8603", "amphoe": "ปะทิว", "changwat": "ชุมพร", "type": "1", "count": 32, "lat": 10.663911787717744, "lon": 99.288294405822498 }, "geometry": { "type": "Point", "coordinates": [ 99.288294405822498, 10.663911787717744 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8608", "amphoe": "ทุ่งตะโก", "changwat": "ชุมพร", "type": "1", "count": 3, "lat": 10.122354089775472, "lon": 99.142550544308563 }, "geometry": { "type": "Point", "coordinates": [ 99.142550544308563, 10.122354089775472 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8604", "amphoe": "หลังสวน", "changwat": "ชุมพร", "type": "1", "count": 5, "lat": 9.9507652738537935, "lon": 99.083787970920568 }, "geometry": { "type": "Point", "coordinates": [ 99.083787970920568, 9.950765273853794 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8603", "amphoe": "ปะทิว", "changwat": "ชุมพร", "type": "2", "count": 5, "lat": 10.602094513153444, "lon": 99.248360165978795 }, "geometry": { "type": "Point", "coordinates": [ 99.248360165978795, 10.602094513153444 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8602", "amphoe": "ท่าแซะ", "changwat": "ชุมพร", "type": "2", "count": 4, "lat": 10.880219547492578, "lon": 99.173562463717232 }, "geometry": { "type": "Point", "coordinates": [ 99.173562463717232, 10.880219547492578 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8601", "amphoe": "เมืองชุมพร", "changwat": "ชุมพร", "type": "2", "count": 6, "lat": 10.427696201171846, "lon": 99.218185218872165 }, "geometry": { "type": "Point", "coordinates": [ 99.218185218872165, 10.427696201171846 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8602", "amphoe": "ท่าแซะ", "changwat": "ชุมพร", "type": "3", "count": 14, "lat": 10.768576153617595, "lon": 99.010830997524423 }, "geometry": { "type": "Point", "coordinates": [ 99.010830997524423, 10.768576153617595 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8603", "amphoe": "ปะทิว", "changwat": "ชุมพร", "type": "3", "count": 3, "lat": 10.861956277355841, "lon": 99.355824013102378 }, "geometry": { "type": "Point", "coordinates": [ 99.355824013102378, 10.861956277355841 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8607", "amphoe": "สวี", "changwat": "ชุมพร", "type": "3", "count": 1, "lat": 10.273436300945425, "lon": 99.133334930118139 }, "geometry": { "type": "Point", "coordinates": [ 99.133334930118139, 10.273436300945425 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8601", "amphoe": "เมืองชุมพร", "changwat": "ชุมพร", "type": "3", "count": 2, "lat": 10.503641296444201, "lon": 99.21251415250903 }, "geometry": { "type": "Point", "coordinates": [ 99.21251415250903, 10.503641296444201 ] } },
+{ "type": "Feature", "properties": { "ccaa": "7704", "amphoe": "บางสะพาน", "changwat": "ประจวบคีรีขันธ์", "type": "3", "count": 1, "lat": 11.388597341329001, "lon": 99.466276527887842 }, "geometry": { "type": "Point", "coordinates": [ 99.466276527887842, 11.388597341329001 ] } },
+{ "type": "Feature", "properties": { "ccaa": "8608", "amphoe": "ทุ่งตะโก", "changwat": "ชุมพร", "type": "3", "count": 1, "lat": 10.056265080826678, "lon": 99.027532108187771 }, "geometry": { "type": "Point", "coordinates": [ 99.027532108187771, 10.056265080826678 ] } }
+]
+}

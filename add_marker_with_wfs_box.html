@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet บันทึกตำแหน่ง</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+       
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    
+    <script src="./src/Leaflet.draw.js"></script>
+    <script src="./src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="./src/leaflet.draw.css"/>
+
+    <script src="./src/Toolbar.js"></script>
+    <script src="./src/Tooltip.js"></script>
+
+    <script src="./src/ext/GeometryUtil.js"></script>
+    <script src="./src/ext/LatLngUtil.js"></script>
+    <script src="./src/ext/LineUtil.Intersect.js"></script>
+    <script src="./src/ext/Polygon.Intersect.js"></script>
+    <script src="./src/ext/Polyline.Intersect.js"></script>
+    <script src="./src/ext/TouchEvents.js"></script>
+
+    <script src="./src/draw/DrawToolbar.js"></script>
+    <script src="./src/draw/handler/Draw.Feature.js"></script>
+    <script src="./src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="./src/draw/handler/Draw.Polyline.js"></script>
+    <script src="./src/draw/handler/Draw.Marker.js"></script>
+    <script src="./src/draw/handler/Draw.Circle.js"></script>
+    <script src="./src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="./src/draw/handler/Draw.Polygon.js"></script>
+    <script src="./src/draw/handler/Draw.Rectangle.js"></script>
+
+
+    <script src="./src/edit/EditToolbar.js"></script>
+    <script src="./src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="./src/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script src="./src/Control.Draw.js"></script>
+
+    <script src="./src/edit/handler/Edit.Poly.js"></script>
+    <script src="./src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="./src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="./src/edit/handler/Edit.Marker.js"></script>
+    <script src="./src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="./src/edit/handler/Edit.Circle.js"></script>
+
+<style>
+    body { margin:0; padding:0; }
+	
+	.red{
+		background:#FF0000;
+		border: 2px solid #000;
+	} 
+	.green{
+		background:#00CC00;
+		border: 2px solid #000;
+	}
+	  
+    .leaflet-tooltip.my-labels {
+        background-color: transparent; /*transparent*/ 
+        border: none;
+        box-shadow: none;
+        font-weight: bold;
+        font-size: 14px;
+        color: #3f0ac7;
+        text-align: right;
+        text-decoration: underline;
+        margin-left: 45px;
+    }
+
+    .leaflet-tooltip.amp-labels {
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        font-weight: bold;
+        font-size: 16px;
+        color: #0f170c;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-9">
+                <div id='map' style="height:100vh;z-index:1;"></div>
+            </div>
+            <div class="col">
+                <div>
+                    <p class="font-weight-bold">เลือกจังหวัด</p>
+                
+                    <select class="form-control" id="province_select" onchange="getval(this);">
+                        <option value="" disabled selected>เลือกจังหวัด....</option>
+                        <option value="12">นนทบุรี</option>
+                        <option value="20">ชลบุรี</option>
+                        <option value="67">เพชรบูรณ์</option>
+                        <option value="50">เชียงใหม่</option>
+                        <option value="70">ราชบุรี</option>
+                    </select>
+                    <hr class="my-5">
+                    <form id='input'>
+                        <div class="form-group">
+                            <label for="type_select">เลือกประเภท</label>
+                            <select class="form-control" id="type_select" onchange="getForm(this);">
+                              <option value="0">Label พื้นที่</option>  
+                              <option value="1">จนท.</option>
+                              <option value="2">ผู้เสพ</option>
+                              <option value="3">ผู้ค้า</option>
+                              <option value="4">Layout Box</option>
+                            </select>
+                          </div>
+                        
+                        <div class="form-group">
+                            <label for="ampcode">อำเภอ</label>
+                            <input type="input" readonly="readonly"  class="form-control" id="ampcode"  placeholder="ampcode">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lat">Lat</label>
+                            <input type="input" readonly="readonly" class="form-control" id="lat" aria-describedby="emailHelp" placeholder="Enter Latitude">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lon">Lon</label>
+                            <input type="input" readonly="readonly"  class="form-control" id="lon" aria-describedby="emailHelp" placeholder="Enter Longitude">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="layout_box">layout Box</label>
+                            <textarea id="layout_box"  readonly style="width: 100%;" rows="8" placeholder="What's up?" ></textarea>
+                        </div>
+                        
+                        <button id="btn_submit" type="button" class="btn btn-primary">บันทึก</button>
+                        <div id="returnedData" style="background-color:aqua; height:50px;">Return Message...... </div>
+
+                </form>
+                </div>
+            </div>
+          </div>
+    </div>
+
+
+<script>
+$(document).ready(function() {
+    var _marker = [
+                    {areacode:"TH1001",type:"1",lat:13.1234567 ,lon:100.3211122222},
+                    {areacode:"TH1002",type:"1",lat:13.2234567 ,lon:101.3211122222},
+                ] ;     
+    //Save data
+    $("#btn_submit").click(function(){
+        //event.preventDefault();
+        if($('#ampcode').val() && $('#type_select').val()){
+            var areacode = $('#ampcode').val();
+            var sel = areacode.substring(2, 4);
+            //alert(sel);
+            var type = $('#type_select').val();
+            var lat = $('#lat').val();
+            var lon = $('#lon').val();
+            var layout_box = $('#layout_box').val();
+            $.post("http://localhost:3004/marker",
+                {areacode: areacode, type:type, lat:lat ,lon:lon ,layout_box:layout_box },
+                function (result, status, xhr) {
+                    if(map.hasLayer(poi)){ map.removeLayer(poi);} 
+                    $("#returnedData").html(status);
+                    //บางครั้งเหมือนยัง save data ไม่เสร็จ พอ getMarker(sel); จะยังไม่ได้ record ล่าสุดที่บันทึกไป
+                    //getMarker(sel);
+                    setTimeout(function() {
+                        console.log('Was called after 1.5 seconds');
+                        getMarker(sel);
+                    }, 1300);
+                })
+                .done(function(response){
+                    setTimeout(function() {
+                        $("#returnedData").html("done");
+                    }, 1000);
+                    
+                })
+                .fail(function (xhr, status, error) {
+                    console.log(' fail-xhr',xhr);
+                    console.log('fail-status',status);
+                    console.log('fail-error',error);
+                    $("#returnedData").html("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+            });
+           
+        }else{
+            $("#returnedData").html("ยังไม่มีข้อมูลปรับปรุง...." );
+            //showNotify("warning", "คำเตือน" , "ยังไม่มีข้อมูลปรับปรุง...." );
+        }
+              
+    });
+});    
+    var p_layergroup ;
+    var poi;
+    var poi_popup;
+    var ampArea ; 
+    var selectedArea;
+    var no_icon = L.divIcon({
+                        html: '<span ></span>',
+                        className: '',
+                        iconSize: [1, 1]
+                    });
+    var _icon0 = L.icon({
+            iconUrl:  'images/orange-pin.png',
+            iconSize: [39, 34],
+            iconAnchor: [9, 21],
+            popupAnchor: [0, -14],
+            });
+    var _icon1 = L.icon({
+            iconUrl:  'images/person-icon-1.png',
+            iconSize: [39, 34],
+            iconAnchor: [9, 21],
+            popupAnchor: [0, -14],
+            });
+    var _icon2 = L.icon({
+            iconUrl:  'images/person-icon-2.png',
+            iconSize: [39, 34],
+            iconAnchor: [9, 21],
+            popupAnchor: [0, -14],
+            });    
+    var _icon3 = L.icon({
+            iconUrl:  'images/person-icon-3.png',
+            iconSize: [39, 34],
+            iconAnchor: [9, 21],
+            popupAnchor: [0, -14],
+            });   
+    //callout box
+    var _boxStyle = {
+        "color": "blue",
+        "weight": 3,
+        "opacity": 0.65
+    };         
+
+var baseMaps = {
+  'Empty': L.tileLayer(''),
+  'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', null )
+};
+
+var map = L.map('map', {
+        'center': [13.085857919,101.19384067],
+        'zoom': 6
+    });
+
+var drawnItems = L.featureGroup().addTo(map);
+
+L.control.layers({
+                    'Empty': L.tileLayer(''),
+                    'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', null )
+                }, 
+                { 
+                    'drawlayer': drawnItems 
+                }, 
+                { 
+                    position: 'topleft', 
+                    collapsed: false 
+                }).addTo(map);
+
+                drawControl = new L.Control.Draw({
+        draw : {
+            position : 'topleft',
+            polygon : false,
+            polyline : {
+                            shapeOptions : {
+                                color: '#FF5500',
+                                opacity: 1,
+                                weight: 2
+                            }
+                        },
+            rectangle : {
+                            shapeOptions : {
+                                color: '#FF556F',
+                                opacity: 1,
+                                weight: 2
+                            }
+                        },
+            circle : false,
+            marker : false,
+
+
+        },
+        edit :{
+            featureGroup: drawnItems,
+            edit: {
+                selectedPathOptions: {
+                    color: '#FF5500',
+                    opacity: 1,
+                    weight: 2,
+                }
+            }
+        }
+    });
+
+map.addControl(drawControl); 
+
+map.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+
+        console.log('On draw:created', event.target);
+        console.log(event.type, event);
+
+        drawnItems.addLayer(layer);
+
+        var data = drawnItems.toGeoJSON();
+
+        $('#layout_box').html(JSON.stringify(data));
+    });
+
+//Geoserver Web Feature Service
+$.ajax('http://gismis.probation.go.th:8080/geoserver/TH2022/ows?service=WFS',{
+  type: 'GET',
+  data: {
+    service: 'WFS',
+    version: '1.0.0',
+    request: 'GetFeature',
+    typename: 'TH2022:amp-2022',
+    srsname: 'EPSG:4326',
+    outputFormat: 'text/javascript',
+    },
+  dataType: 'jsonp',
+  jsonpCallback:'callback:handleJson',
+  jsonp:'format_options'
+ });
+
+ //-- 
+
+
+//=======function======================
+// the ajax callback function
+function handleJson(data) {
+    ampArea = data;
+    selectedArea = L.geoJson(data, {
+                        filter: function(feature, layer) {
+                            return feature.properties.ADM1_PCODE=="TH70";
+                        },
+                        onEachFeature: onEachFeature
+        }).addTo(map);
+    //console.log(selectedArea._layers[75].feature.properties.ADM1_PCODE);
+
+    map.fitBounds(selectedArea.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    poi_popup = layer;
+    
+    layer.on('click', function (e) {
+        if(map.hasLayer(poi)){ map.removeLayer(poi);}  
+        //console.log(e);
+        var type = $('#type_select').val();
+        //console.log("type",type);
+        $('#ampcode').val(feature.properties.ADM2_PCODE);
+        if(type !== "4"){
+            $('#lat').val(e.latlng.lat.toFixed(10)); 
+            $('#lon').val(e.latlng.lng.toFixed(10)); 
+        }
+        var popupContent="รหัสอำเภอ  = "+feature.properties.ADM2_PCODE +"<br/> ชื่ออำเภอ = "+feature.properties.ADM2_TH;
+        poi = L.marker([e.latlng.lat, e.latlng.lng] ,{icon: _icon0 ,draggable: true}).bindPopup(popupContent).addTo(map).openPopup() ;
+        poi.on('dragend', function (e) {
+                $('#lat').val(poi.getLatLng().lat.toFixed(10)); 
+                $('#lon').val(poi.getLatLng().lng.toFixed(10)); 
+        });
+  
+    });
+    
+    // does this feature have a property named popupContent?
+    // if (feature.properties && feature.properties.ADM1_PCODE) {
+    //     poi_popup.bindPopup("<br/>ampcode = "+feature.properties.ADM2_PCODE +"<br/> ampname = "+feature.properties.ADM2_TH);
+    // }
+}
+
+function whenClicked(e) {
+  // e = event
+   console.log(e.latlng.lng +","+e.latlng.lat,);
+   var marker = new L.marker(e.latlng ,{icon: _icon1});
+    marker.addTo(map);
+  
+    //$('#ampcode').val(amp);
+    $('#lat').val(e.latlng.lat);
+    $('#lon').val(e.latlng.lng);
+}
+
+function getForm(sel){
+    var type = sel.value ;
+    if(type=="4"){
+        $('#lat').val("");
+        $('#lon').val("");
+    }else{
+        $('#layout_box').val("");
+    }
+}
+
+function getval(sel){
+    //reset form value
+    $('#ampcode').val("");
+    $('#lon').val("");
+    $('#lat').val("");
+    $('#layout_box').val("");
+
+    //clearAllLayer();
+    if(map.hasLayer(drawnItems)){ map.removeLayer(drawnItems);}  
+    if(map.hasLayer(poi)){ map.removeLayer(poi);}  
+    if(map.hasLayer(selectedArea)){map.removeLayer(selectedArea);}
+    if(map.hasLayer(p_layergroup)){map.removeLayer(p_layergroup);}
+    selectedArea = L.geoJson(ampArea, {
+                        filter: function(feature, layer) {
+                            return feature.properties.ADM1_PCODE=="TH"+sel.value;
+                        },
+                        onEachFeature: onEachFeature
+        });   
+    getMarker(sel.value);    
+
+    selectedArea.addTo(map);
+    //console.log("selectedArea.getBounds()",selectedArea.getBounds()) 
+
+    map.fitBounds(selectedArea.getBounds());
+
+}
+  
+function getMarker(sel){
+    if(map.hasLayer(p_layergroup)){map.removeLayer(p_layergroup);}
+    var label_class ;
+    p_layergroup = new L.LayerGroup();    
+    $.getJSON("http://localhost:3004/marker/"+sel,function(data){
+        console.log("marker- data---", data);
+        for (var i = 0; i < data.length; ++i) {
+            //console.log("data"+i, data[i]);
+            var label = data[i].areacode
+            var lon=data[i].lon;
+            var lat=data[i].lat;
+            var box = JSON.parse("["+data[i].layout_box+"]");
+            if(data[i].type=="0"){
+                label_class="amp-labels";
+                label = "อ."+data[i].ampname;
+            }else{
+                label_class="my-labels";
+                label = data[i].areacode;
+            }
+
+            if(data[i].type !=="4"){
+                switch (data[i].type) {
+                    case '0':set_icon = no_icon; break;
+                    case '1':set_icon = _icon1; break;
+                    case '2': set_icon = _icon2; break;
+                    case '3': set_icon = _icon3; break;
+                }
+
+                var marker = L.marker([lat,lon], {icon: set_icon}).bindTooltip(label, {permanent: true, direction: "center", className: label_class}).openTooltip();  
+                p_layergroup.addLayer(marker);
+            }else{
+                console.log(box);
+                var _box = L.geoJSON(box, {style: _boxStyle}); 
+                p_layergroup.addLayer(_box);
+            }    
+        }
+        p_layergroup.addTo(map);
+        
+    }); 
+}
+
+function clearAllLayer(){
+    map.eachLayer(function (layer) {
+        map.removeLayer(layer);
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOP TEST</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"
+      integrity="sha512-Abr21JO2YqcJ03XGZRPuZSWKBhJpUAR6+2wH5zBeO4wAw4oksr8PRdF+BKIRsxvCdq+Mv4670rZ+dLnIyabbGw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="css/dop.css" />
+
+</head>
+</body>
+  <div id="map"></div>
+  <script>
+    //for geoJson
+    function style(feature) {
+      return {
+        fillColor: getColor(feature.properties.id),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    }
+
+    function getColor(d) {
+      return d =='20' ? '#67001e' :'#FFEDA0';
+    }
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    var _icon1 = L.icon({
+      iconUrl:  'images/person-icon-1.png',
+      iconSize: [39, 34],
+      iconAnchor: [9, 21],
+      popupAnchor: [0, -14],
+    });
+
+    var _icon2 = L.icon({
+      iconUrl:  'images/person-icon-2.png',
+      iconSize: [39, 34],
+      iconAnchor: [9, 21],
+      popupAnchor: [0, -14],
+    });    
+
+    var _icon3 = L.icon({
+      iconUrl:  'images/person-icon-3.png',
+      iconSize: [39, 34],
+      iconAnchor: [9, 21],
+      popupAnchor: [0, -14],
+    });
+
+    var map = L.map('map', {
+      zoomControl: false,
+      attributionControl: false
+    });
+
+    var mywms = L.tileLayer.wms("http://gismis.probation.go.th:8080/geoserver/TH2022/wms", {
+      layers: 'TH2022:amp-2022',
+      format: 'image/png',
+      transparent: true,
+      version: '1.1.0',
+      CQL_FILTER: "ADM1_PCODE='TH<%= @pcode %>'",
+      tiled: false,
+      attribution: "DOP"
+    });
+
+    var geojsonMarkerOptions = {
+      radius: 8,
+      fillColor: "#ff7800",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    };
+
+    $.getJSON("/data/dop-data.geojson",function(data) {
+      L.geoJSON(data, {
+        pointToLayer: function (feature, latlng) {
+          let label = "<b>"+String(numberWithCommas(feature.properties.count))+"</b>"
+          let icon = null;        
+          if (feature.properties.type == '1') {
+            icon = _icon1;
+            label_class = "my-labels-blue";
+          } else if (feature.properties.type == '2') {
+            icon = _icon2;
+            label_class = "my-labels-green";
+          } else {
+            icon = _icon3;
+            label_class = "my-labels-red";
+          }
+          return new L.marker(latlng, {
+            icon: icon
+          }).bindTooltip(label, {
+            permanent: true,
+            direction: "center",
+            className: label_class
+          }).openTooltip();
+        }
+        //return L.circleMarker(latlng, geojsonMarkerOptions);
+      }).addTo(map);
+    });
+
+    mywms.addTo(map);
+    var dop = new L.geoJson();
+    dop.addTo(map);
+
+    const bb = <%= @bbox %>;
+    map.fitBounds([
+      [bb[1], bb[0]],
+      [bb[3], bb[2]]
+    ]);
+  </script>
+</html>
+

@@ -1,0 +1,145 @@
+<h1>Report Generator</h1>
+File to be processed: <h2><%= params[:file] %></h2>
+OFFICE INFO
+<%= @off_info %>
+<hr>
+<p>
+
+<h2>ข้อมูลผู้เสพ</h2>
+<table width="25%" border="1">
+  <tr>
+    <th>จังหวัด</th>
+    <th>จำนวน</th>
+  </tr>
+  <% total = 0 %>
+  <% @info1.sort_by { |k,v| v }.reverse.each do |k,v| %>
+    <% total += v %>
+    <tr>
+      <td><%= k %></td>
+      <td><%= v %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td><%= total %></td>
+    </tr>
+</table>
+<p>
+<table width="25%" border="1">
+  <tr>
+    <th>จังหวัด</th>
+    <th>อำเภอ</th>
+    <th>จำนวน</th>
+  </tr>
+  <% @info2.each do |k,vv| %>
+    <% total = 0 %>
+    <% vv.each do |kx,vx| %> 
+      <% total += vx %>
+      <% if k.nil? %>
+        <% k = "ไม่ระบุ" %>
+      <% end %>
+      <tr>
+        <td><%= k %></td>
+        <td><%= kx %></td>
+        <td><%= vx %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td colspan='2'><%= total %></td>
+    </tr>
+  <% end %>
+</table>
+<p>
+<h2>ข้อมูลผู้ค้า</h2>
+<table width="25%" border="1">
+  <tr>
+    <th>จังหวัด</th>
+    <th>จำนวน</th>
+  </tr>
+  <% total = 0 %>
+  <% @info3.sort_by { |k,v| v }.reverse.each do |k,v| %>
+    <% total += v %>
+    <tr>
+      <td><%= k %></td>
+      <td><%= v %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td><%= total %></td>
+    </tr>
+</table>
+<p>
+<table width="25%" border="1">
+  <% @info4.each do |k,vv| %>
+    <% total = 0 %>
+    <% vv.each do |kx,vx| %> 
+      <% total += vx %>
+      <% if k.nil? %>
+        <% k = "ไม่ระบุ" %>
+      <% end %>
+      <tr>
+        <td><%= k %></td>
+        <td><%= kx %></td>
+        <td><%= vx %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td colspan='2'><%= total %></td>
+    </tr>
+  <% end %>
+</table>
+<p>
+
+<h2>ข้อมูลเจ้าหน้าที่</h2>
+<table width="25%" border="1">
+  <tr>
+    <th>จังหวัด</th>
+    <th>จำนวน</th>
+  </tr>
+  <% total = 0 %>
+  <% @info5.sort_by { |k,v| v }.reverse.each do |k,v| %>
+    <% total += v %>
+    <tr>
+      <td><%= k %></td>
+      <td><%= v %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td><%= total %></td>
+    </tr>
+</table>
+<p>
+<table width="25%" border="1">
+  <tr>
+    <th>จังหวัด</th>
+    <th>อำเภอ</th>
+    <th>จำนวน</th>
+  </tr>
+  <% @info6.each do |k,vv| %>
+    <% total = 0 %>
+    <% vv.each do |kx,vx| %>
+      <% total += vx %>
+      <% if k.nil? %>
+        <% k = "ไม่ระบุ" %>
+      <% end %>
+      <tr>
+        <td><%= k %></td>
+        <td><%= kx %></td>
+        <td><%= vx %></td>
+     </tr>
+    <% end %>
+    <tr>
+      <th>ยอดรวม</th>
+      <td colspan='2'><%= total %></td>
+    </tr>
+  <% end %>
+</table>
+<p>
+<button><a href="/upload">Back</a></button>
+<!-- button type="button" disabled><a href="/map?pcode=<%= @pcode %>" target='_blank'>Show Map</a></button --//>
+<button type="button" disabled><a href="#">Show Map (not done)</a></button>
+<p>
